@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://guneffect.png" type="Texture" id=1]
+[ext_resource path="res://guneffect.gd" type="Script" id=2]
+
+[node name="guneffect" type="Particles2D"]
+
+visibility/behind_parent = true
+transform/pos = Vector2( 0, -6.75851 )
+transform/rot = 180.0
+transform/scale = Vector2( 4, 4 )
+config/amount = 20
+config/lifetime = 0.5
+config/process_mode = 1
+config/texture = ExtResource( 1 )
+params/direction = 0.0
+params/spread = 50.0
+params/linear_velocity = 100.0
+params/spin_velocity = 20.0
+params/orbit_velocity = 0.0
+params/gravity_direction = 0.0
+params/gravity_strength = 0.0
+params/radial_accel = -4.74
+params/tangential_accel = 0.0
+params/damping = 75.852
+params/initial_angle = 0.0
+params/initial_size = 1.0
+params/final_size = 1.0
+params/hue_variation = 0.07
+params/anim_speed_scale = 1.0
+params/anim_initial_pos = 0.0
+randomness/spread = 1.0
+randomness/spin_velocity = 1.0
+randomness/radial_accel = 1.0
+randomness/damping = 0.26
+randomness/initial_size = 1.0
+randomness/final_size = 1.0
+randomness/hue_variation = 1.0
+script/script = ExtResource( 2 )
+
+
