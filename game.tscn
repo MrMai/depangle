@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://player0.png" type="Texture" id=2]
@@ -7,10 +7,12 @@
 [ext_resource path="res://gun1.png" type="Texture" id=5]
 [ext_resource path="res://gun2.png" type="Texture" id=6]
 [ext_resource path="res://gun3.png" type="Texture" id=7]
-[ext_resource path="res://smoke.png" type="Texture" id=8]
-[ext_resource path="res://gun.wav" type="Sample" id=9]
-[ext_resource path="res://idle.wav" type="Sample" id=10]
-[ext_resource path="res://move.wav" type="Sample" id=11]
+[ext_resource path="res://gun.wav" type="Sample" id=8]
+[ext_resource path="res://idle.wav" type="Sample" id=9]
+[ext_resource path="res://move.wav" type="Sample" id=10]
+[ext_resource path="res://map0.png" type="Texture" id=11]
+[ext_resource path="res://smoke.png" type="Texture" id=12]
+[ext_resource path="res://ammoring.png" type="Texture" id=13]
 
 [sub_resource type="Animation" id=1]
 
@@ -19,7 +21,7 @@ length = 0.2
 loop = true
 step = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath("player/body:texture")
+tracks/0/path = NodePath("player/player/body:texture")
 tracks/0/interp = 1
 tracks/0/imported = false
 tracks/0/keys = {
@@ -46,18 +48,13 @@ tracks/0/keys = {
 "values": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 4 ) ]
 }
 
-[sub_resource type="CircleShape2D" id=3]
-
-custom_solver_bias = 0.0
-radius = 10.0
-
 [sub_resource type="SampleLibrary" id=5]
 
 samples/gun = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 9 )
+"sample": ExtResource( 8 )
 }
 
 [sub_resource type="SampleLibrary" id=6]
@@ -66,14 +63,24 @@ samples/idle = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 10 )
+"sample": ExtResource( 9 )
 }
 samples/move = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
-"sample": ExtResource( 11 )
+"sample": ExtResource( 10 )
 }
+
+[sub_resource type="RectangleShape2D" id=7]
+
+custom_solver_bias = 0.0
+extents = Vector2( 94.9383, 112.966 )
+
+[sub_resource type="CircleShape2D" id=3]
+
+custom_solver_bias = 0.0
+radius = 26.437
 
 [node name="game" type="Node2D"]
 
@@ -101,69 +108,6 @@ playback/speed = 1.0
 blend_times = [  ]
 autoplay = ""
 
-[node name="player" type="Node2D" parent="."]
-
-[node name="body" type="Sprite" parent="player"]
-
-transform/scale = Vector2( 4, 4 )
-z/z = -1
-texture = ExtResource( 2 )
-
-[node name="gun" type="Sprite" parent="player"]
-
-transform/scale = Vector2( 4, 4 )
-z/z = 1
-texture = ExtResource( 4 )
-
-[node name="dust" type="Particles2D" parent="player"]
-
-visibility/behind_parent = true
-transform/scale = Vector2( 4, 4 )
-z/z = -2
-config/amount = 32
-config/lifetime = 1.25
-config/process_mode = 1
-config/texture = ExtResource( 8 )
-params/direction = 0.0
-params/spread = 180.0
-params/linear_velocity = 20.0
-params/spin_velocity = 0.0
-params/orbit_velocity = 0.0
-params/gravity_direction = 0.0
-params/gravity_strength = 0.0
-params/radial_accel = 0.0
-params/tangential_accel = 0.0
-params/damping = 0.0
-params/initial_angle = 0.0
-params/initial_size = 1.0
-params/final_size = 1.0
-params/hue_variation = 0.0
-params/anim_speed_scale = 1.0
-params/anim_initial_pos = 0.0
-randomness/direction = 1.0
-randomness/linear_velocity = 0.05
-randomness/spin_velocity = 1.0
-randomness/radial_accel = 1.0
-randomness/initial_angle = 1.0
-randomness/initial_size = 0.25
-
-[node name="phybody" type="KinematicBody2D" parent="player"]
-
-input/pickable = false
-shapes/0/shape = SubResource( 3 )
-shapes/0/transform = Matrix32( 2.89983, 0, 0, 2.89983, 0, 0 )
-shapes/0/trigger = false
-collision/layers = 1
-collision/mask = 1
-collision/margin = 0.08
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player/phybody"]
-
-transform/scale = Vector2( 2.89983, 2.89983 )
-shape = SubResource( 3 )
-trigger = false
-_update_shape_index = 0
-
 [node name="gunplayer" type="SamplePlayer" parent="."]
 
 config/polyphony = 3
@@ -185,7 +129,7 @@ default/chorus_send = 0.0
 
 config/polyphony = 1
 config/samples = SubResource( 6 )
-default/volume_db = 0.0
+default/volume_db = -1.0
 default/pitch_scale = 1.0
 default/pan = 0.0
 default/depth = 0.0
@@ -197,5 +141,145 @@ default/filter/gain = 1.0
 default/reverb_room = 2
 default/reverb_send = 0.0
 default/chorus_send = 0.0
+
+[node name="playercamera" type="Camera2D" parent="."]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = true
+smoothing/speed = 10.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
+
+[node name="world" type="StaticBody2D" parent="."]
+
+input/pickable = false
+shapes/0/shape = SubResource( 7 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 139.452, 34.2504 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="world"]
+
+transform/pos = Vector2( 139.452, 34.2504 )
+shape = SubResource( 7 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Sprite" type="Sprite" parent="world"]
+
+transform/scale = Vector2( 4, 4 )
+z/z = -6
+texture = ExtResource( 11 )
+
+[node name="player" type="Node2D" parent="."]
+
+[node name="gun" type="Sprite" parent="player"]
+
+transform/scale = Vector2( 4, 4 )
+z/z = 1
+texture = ExtResource( 4 )
+
+[node name="bulletspawn" type="Node2D" parent="player/gun"]
+
+transform/pos = Vector2( 0, -10 )
+
+[node name="dust" type="Particles2D" parent="player"]
+
+visibility/opacity = 0.5
+visibility/behind_parent = true
+transform/scale = Vector2( 4, 4 )
+z/z = -2
+config/amount = 20
+config/lifetime = 1.25
+config/process_mode = 1
+config/texture = ExtResource( 12 )
+params/direction = 0.0
+params/spread = 50.0
+params/linear_velocity = 30.0
+params/spin_velocity = 2.16
+params/orbit_velocity = 0.0
+params/gravity_direction = 0.0
+params/gravity_strength = 0.0
+params/radial_accel = 0.0
+params/tangential_accel = 0.0
+params/damping = 10.0
+params/initial_angle = 0.0
+params/initial_size = 1.0
+params/final_size = 0.5
+params/hue_variation = 0.0
+params/anim_speed_scale = 1.0
+params/anim_initial_pos = 0.0
+randomness/direction = 1.0
+randomness/linear_velocity = 0.05
+randomness/spin_velocity = 1.0
+randomness/radial_accel = 1.0
+randomness/initial_angle = 1.0
+randomness/initial_size = 0.25
+
+[node name="player" type="KinematicBody2D" parent="player"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 3 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 5 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+
+[node name="body" type="Sprite" parent="player/player"]
+
+transform/scale = Vector2( 4, 4 )
+z/z = -1
+texture = ExtResource( 2 )
+
+[node name="shape" type="CollisionShape2D" parent="player/player"]
+
+transform/pos = Vector2( 0, 5 )
+z/z = -4
+shape = SubResource( 3 )
+trigger = false
+_update_shape_index = 0
+
+[node name="control" type="Control" parent="."]
+
+rect/scale = Vector2( 4, 4 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 40.0
+
+[node name="ammo0" type="TextureFrame" parent="control"]
+
+focus_neighbour/left = NodePath("../../playercamera")
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -128.0
+margin/top = 42.0
+margin/right = -88.0
+margin/bottom = 82.0
+texture = ExtResource( 13 )
+stretch_mode = 0
 
 
